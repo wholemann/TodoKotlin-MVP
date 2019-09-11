@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TodoKotlin</string>
+    <string name="add_task_hint">할 일 추가...</string>
+    <string name="set_due_date">Set due date</string>
+    <string name="info_create_account">No account yet? Create one</string>
+    <string name="btn_sign_up">Sign Up</string>
+    <string name="btn_sign_in">Sign in</string>
+    <string name="info_sign_in_link">Already a member? Sign In</string>
+</resources>
