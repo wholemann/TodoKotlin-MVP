@@ -15,5 +15,12 @@ class SignInActivity : AppCompatActivity() {
             val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
             startActivity(intent)
         }
+
+        btn_sign_in.setOnClickListener {
+            val intent = Intent(this@SignInActivity, MainActivity::class.java)
+            startActivity(intent)
+            PreferenceHelper.signIn = true
+            finish()
+        }
     }
 }

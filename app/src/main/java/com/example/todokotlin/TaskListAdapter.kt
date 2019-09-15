@@ -1,23 +1,20 @@
 package com.example.todokotlin
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_task.view.*
 
 class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
 
-    private var items: MutableList<TaskItem> = mutableListOf()
+    private var tasks = emptyList<TaskEntity>()
 
     private var listener: ItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(parent)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        items[position].let { task ->
+        tasks[position].let { task ->
             with(holder.itemView) {
                 tv_task_title.text = task.title
                 tv_creator_username.text = task.userName
@@ -35,16 +32,16 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return tasks.size
     }
 
-    fun addTask(task: TaskItem) {
-        this.items.add(0, task)
-        notifyItemInserted(0)
-    }
+//    fun addTask(task: TaskEntity) {
+//        this.tasks.add(0, task)
+//        notifyItemInserted(0)
+//    }
 
-    fun bindTasks(items: List<TaskItem>) {
-        this.items = items.toMutableList()
+    fun bindTasks(tasks: List<TaskEntity>) {
+        this.tasks = tasks
         notifyDataSetChanged()
     }
 
@@ -59,6 +56,6 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
 
     interface ItemClickListener {
 
-        fun onItemClicked(task: TaskItem)
+        fun onItemClicked(task: TaskEntity)
     }
 }

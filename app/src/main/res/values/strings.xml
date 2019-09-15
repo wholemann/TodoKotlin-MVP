@@ -6,4 +6,7 @@
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_sign_in">Sign in</string>
     <string name="info_sign_in_link">Already a member? Sign In</string>
+    <string name="input_email">Email</string>
+    <string name="input_password">Password</string>
+    <string name="input_name">Name</string>
 </resources>

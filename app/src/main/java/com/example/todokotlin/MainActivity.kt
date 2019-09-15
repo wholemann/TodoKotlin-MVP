@@ -1,12 +1,13 @@
 package com.example.todokotlin
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), TaskListAdapter.ItemClickListener {
@@ -14,6 +15,10 @@ class MainActivity : AppCompatActivity(), TaskListAdapter.ItemClickListener {
     private val adapter: TaskListAdapter by lazy {
         TaskListAdapter().apply { setItemClickListener(this@MainActivity) }
     }
+
+    private lateinit var taskViewModel: TaskViewModel
+
+    private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,14 +30,22 @@ class MainActivity : AppCompatActivity(), TaskListAdapter.ItemClickListener {
             finish()
         }
 
+        viewModelFactory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+
+        taskViewModel = ViewModelProvider(this, viewModelFactory).get(TaskViewModel::class.java)
+
+        taskViewModel.findAll().observe(this, Observer<List<TaskEntity>> {
+            Log.i("taskViewModel", "update UI")
+            bindTasks(it)
+        })
+
         et_add_task.setOnEditorActionListener { v, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
-                    addTask(
-                        TaskItem(
+                    taskViewModel.save(
+                        TaskEntity(
                             title = v.text.toString(),
-                            userName = "wholeman",
-                            commentCount = 1
+                            userId = 1
                         )
                     )
                     v.text = ""
@@ -47,31 +60,13 @@ class MainActivity : AppCompatActivity(), TaskListAdapter.ItemClickListener {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        fetchTasks()
-    }
-
-    override fun onItemClicked(task: TaskItem) {
+    override fun onItemClicked(task: TaskEntity) {
         val intent = Intent(this@MainActivity, TaskDetailActivity::class.java)
         startActivity(intent)
     }
 
-    private fun fetchTasks() {
-//        bindTasks(tasks)
-    }
 
-    private fun addTask(task: TaskItem) {
-        adapter.addTask(task)
-    }
-
-    private fun bindTasks(tasks: List<TaskItem>) {
+    private fun bindTasks(tasks: List<TaskEntity>) {
         adapter.bindTasks(tasks)
-    }
-
-    private fun hideSoftKeyboard() {
-        (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).run {
-            hideSoftInputFromWindow(currentFocus.windowToken, 0)
-        }
     }
 }
