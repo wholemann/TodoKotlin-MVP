@@ -1,37 +1,27 @@
 package com.example.todokotlin
 
-import android.app.Application
-import android.os.AsyncTask
 import androidx.lifecycle.LiveData
-import java.lang.reflect.Constructor
+import io.reactivex.Completable
+import io.reactivex.Single
 
-class TaskRepository constructor(application: Application) {
+class TaskRepository(
+    private val taskDao: TaskDao,
+    private val service: TodoService
+) {
 
-    private val db: AppDatabase = AppDatabase.getInstance(application)!!
-    private val taskDao: TaskDao = db.taskDao()
-    private val tasks: LiveData<List<TaskEntity>> = taskDao.findAll()
-
-    fun findAll(): LiveData<List<TaskEntity>> {
-        return tasks
+    fun findAll(): Single<List<TaskEntity>> {
+        return service.getTodos()
     }
 
-    fun save(task: TaskEntity) {
-        SaveAsyncTask(taskDao).execute(task)
-//        taskDao.save(task)
+    fun findById(id: Long): LiveData<TaskEntity> {
+        return taskDao.findById(id)
     }
 
-    fun delete(task: TaskEntity) {
-        taskDao.delete(task)
+    fun save(task: TaskEntity): Completable {
+        return Completable.fromCallable { taskDao.save(task) }
     }
 
-    companion object {
-        class SaveAsyncTask constructor(private val mAsyncTaskDao: TaskDao) : AsyncTask<TaskEntity, Void, Void>() {
-
-            override fun doInBackground(vararg params: TaskEntity?): Void? {
-                params[0]?.let { mAsyncTaskDao.save(it) }
-                return null
-            }
-
-        }
+    fun delete(task: TaskEntity): Completable {
+        return Completable.fromCallable { taskDao.delete(task) }
     }
 }

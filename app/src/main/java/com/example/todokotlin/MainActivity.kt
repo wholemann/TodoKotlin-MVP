@@ -4,11 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), TaskListAdapter.ItemClickListener {
 
@@ -16,9 +15,7 @@ class MainActivity : AppCompatActivity(), TaskListAdapter.ItemClickListener {
         TaskListAdapter().apply { setItemClickListener(this@MainActivity) }
     }
 
-    private lateinit var taskViewModel: TaskViewModel
-
-    private lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
+    private val taskViewModel: TaskViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +27,9 @@ class MainActivity : AppCompatActivity(), TaskListAdapter.ItemClickListener {
             finish()
         }
 
-        viewModelFactory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        taskViewModel.getAllTasks()
 
-        taskViewModel = ViewModelProvider(this, viewModelFactory).get(TaskViewModel::class.java)
-
-        taskViewModel.findAll().observe(this, Observer<List<TaskEntity>> {
-            Log.i("taskViewModel", "update UI")
+        taskViewModel.tasks.observe(this, Observer {
             bindTasks(it)
         })
 
@@ -47,8 +41,8 @@ class MainActivity : AppCompatActivity(), TaskListAdapter.ItemClickListener {
                             title = v.text.toString(),
                             userId = 1
                         )
-                    )
-                    v.text = ""
+                    ) { v.text = "" }
+
                     true
                 }
                 else -> false
