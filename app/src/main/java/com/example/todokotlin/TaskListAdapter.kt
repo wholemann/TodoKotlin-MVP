@@ -35,11 +35,6 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
         return tasks.size
     }
 
-//    fun addTask(task: TaskEntity) {
-//        this.tasks.add(0, task)
-//        notifyItemInserted(0)
-//    }
-
     fun bindTasks(tasks: List<TaskEntity>) {
         this.tasks = tasks
         notifyDataSetChanged()

@@ -2,7 +2,6 @@ package com.example.todokotlin
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
