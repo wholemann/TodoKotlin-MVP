@@ -1,6 +1,6 @@
 package com.example.todokotlin.di
 
-import com.example.todokotlin.TodoService
+import com.example.todokotlin.api.TodoService
 import org.koin.dsl.module
 import retrofit2.Retrofit
 

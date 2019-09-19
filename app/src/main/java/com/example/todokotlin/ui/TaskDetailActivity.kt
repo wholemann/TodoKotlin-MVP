@@ -1,7 +1,8 @@
-package com.example.todokotlin
+package com.example.todokotlin.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.todokotlin.R
 
 class TaskDetailActivity : AppCompatActivity() {
 

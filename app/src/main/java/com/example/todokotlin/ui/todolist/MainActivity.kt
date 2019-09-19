@@ -1,14 +1,23 @@
-package com.example.todokotlin
+package com.example.todokotlin.ui.todolist
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.inputmethod.EditorInfo
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.example.todokotlin.R
+import com.example.todokotlin.data.PreferenceHelper
+import com.example.todokotlin.data.TaskEntity
+import com.example.todokotlin.databinding.ActivityMainBinding
+import com.example.todokotlin.ui.BaseActivity
+import com.example.todokotlin.ui.TaskDetailActivity
+import com.example.todokotlin.ui.signin.SignInActivity
+import com.example.todokotlin.viewmodel.TaskViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity(), TaskListAdapter.ItemClickListener {
+class MainActivity : BaseActivity<ActivityMainBinding>(),
+    TaskListAdapter.ItemClickListener {
+
+    override val layoutResourceId: Int = R.layout.activity_main
 
     private val adapter: TaskListAdapter by lazy {
         TaskListAdapter().apply { setItemClickListener(this@MainActivity) }
@@ -18,7 +27,8 @@ class MainActivity : AppCompatActivity(), TaskListAdapter.ItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        viewDataBinding.lifecycleOwner = this
 
         if (!PreferenceHelper.signIn) {
             val intent = Intent(this@MainActivity, SignInActivity::class.java)
@@ -26,27 +36,14 @@ class MainActivity : AppCompatActivity(), TaskListAdapter.ItemClickListener {
             finish()
         }
 
-        taskViewModel.getAllTasks()
+        taskViewModel.clickDone.observe(this, Observer {
+        })
+
+//        taskViewModel.getAllTasks()
 
         taskViewModel.tasks.observe(this, Observer {
             bindTasks(it)
         })
-
-        et_add_task.setOnEditorActionListener { v, actionId, _ ->
-            when (actionId) {
-                EditorInfo.IME_ACTION_DONE -> {
-                    taskViewModel.save(
-                        TaskEntity(
-                            title = v.text.toString(),
-                            userId = 1
-                        )
-                    ) { v.text = "" }
-
-                    true
-                }
-                else -> false
-            }
-        }
 
         with(rv_task_list) {
             adapter = this@MainActivity.adapter

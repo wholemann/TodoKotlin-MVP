@@ -1,4 +1,4 @@
-package com.example.todokotlin
+package com.example.todokotlin.data
 
 import android.content.Context
 import android.content.SharedPreferences

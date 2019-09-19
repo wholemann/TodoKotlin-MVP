@@ -1,6 +1,6 @@
 package com.example.todokotlin.di
 
-import com.example.todokotlin.TaskViewModel
+import com.example.todokotlin.viewmodel.TaskViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

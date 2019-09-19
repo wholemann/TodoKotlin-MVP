@@ -1,6 +1,7 @@
-package com.example.todokotlin
+package com.example.todokotlin.data
 
 import androidx.lifecycle.LiveData
+import com.example.todokotlin.api.TodoService
 import io.reactivex.Completable
 import io.reactivex.Single
 

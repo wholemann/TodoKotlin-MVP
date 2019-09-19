@@ -1,8 +1,10 @@
-package com.example.todokotlin
+package com.example.todokotlin.ui.todolist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todokotlin.R
+import com.example.todokotlin.data.TaskEntity
 import kotlinx.android.synthetic.main.item_task.view.*
 
 class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {

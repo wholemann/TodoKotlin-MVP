@@ -1,6 +1,6 @@
 package com.example.todokotlin.di
 
-import com.example.todokotlin.AppDatabase
+import com.example.todokotlin.data.AppDatabase
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 

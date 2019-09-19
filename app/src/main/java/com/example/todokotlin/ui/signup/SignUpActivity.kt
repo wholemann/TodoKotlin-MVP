@@ -1,8 +1,10 @@
-package com.example.todokotlin
+package com.example.todokotlin.ui.signup
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.todokotlin.R
+import com.example.todokotlin.ui.signin.SignInActivity
 import kotlinx.android.synthetic.main.activity_signup.*
 
 class SignUpActivity : AppCompatActivity() {

@@ -1,5 +1,6 @@
-package com.example.todokotlin
+package com.example.todokotlin.api
 
+import com.example.todokotlin.data.TaskEntity
 import io.reactivex.Single
 import retrofit2.http.GET
 

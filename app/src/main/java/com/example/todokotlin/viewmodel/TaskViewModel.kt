@@ -1,22 +1,26 @@
-package com.example.todokotlin
+package com.example.todokotlin.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.todokotlin.data.TaskEntity
+import com.example.todokotlin.data.TaskRepository
+import com.tistory.deque.kotlinmvvmsample.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class TaskViewModel(private val repository: TaskRepository) : DisposableViewModel() {
 
     private val _tasks = MutableLiveData<List<TaskEntity>>()
     private val _error = MutableLiveData<String>()
+    private val _clickDone = SingleLiveEvent<Any>()
 
     val showResult = MutableLiveData<Boolean>()
 
     val tasks: LiveData<List<TaskEntity>> get() = _tasks
     val error: LiveData<String> get() = _error
+    val clickDone: LiveData<Any> get() = _clickDone
+    val title = MutableLiveData<String>()
 
     fun getAllTasks() {
         addDisposable(
@@ -36,11 +40,15 @@ class TaskViewModel(private val repository: TaskRepository) : DisposableViewMode
         return repository.findById(id)
     }
 
-    fun save(task: TaskEntity, next: () -> Unit) {
+    fun save() {
+        val currentTitle = title.value ?: return
+        val task = TaskEntity(title = currentTitle, userId = 1)
+        Log.d("TaskViewModel", "save")
+
         addDisposable(repository.save(task)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { next() }
+            .subscribe { }
         )
     }
 
@@ -50,5 +58,9 @@ class TaskViewModel(private val repository: TaskRepository) : DisposableViewMode
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { next() }
         )
+    }
+
+    fun clickDone() {
+        _clickDone.call()
     }
 }

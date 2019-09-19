@@ -1,4 +1,4 @@
-package com.example.todokotlin
+package com.example.todokotlin.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

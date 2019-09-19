@@ -1,4 +1,4 @@
-package com.example.todokotlin
+package com.example.todokotlin.viewmodel
 
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
